@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>RD ThreeJS - Earth</title>
+  <link rel="stylesheet" href="css/main.css">
+</head>
+<body>
+  <script src="lib/three.min.js"></script>
+  <script src="lib/dat.gui.min.js"></script>
+  <script src="lib/TweenMax.min.js"></script>
+  <script src="js/earth.common.js"></script>
+  <script src="js/human.js"></script>
+  <script src="js/earth.main.js"></script>
+  <script>
+    var scene = new THREE.Scene();
+    var camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.01, 100 );
+    camera.position.z = 30;
+
+    var renderer = new THREE.WebGLRenderer({ antialias: true});
+    renderer.setClearColor('#E5E5E5');
+    renderer.setSize( window.innerWidth, window.innerHeight );
+    document.body.appendChild( renderer.domElement );
+
+    window.addEventListener('resize', () => {
+      renderer.setSize( window.innerWidth, window.innerHeight );
+      camera.aspect = window.innerWidth / window.innerHeight;
+      camera.updateProjectionMatrix();
+    });
+
+    var mesh = new THREE.Object3D();
+
+    // head
+    var head = new THREE.Mesh(
+      new THREE.BoxGeometry(1, 1.5, 1),
+      new THREE.MeshLambertMaterial({ color: 0xFFCC00 })
+      // new THREE.MeshPhongMaterial({
+      //   map: new THREE.TextureLoader().load('img/face.jpeg'),
+      // })
+    );
+
+    mesh.add(head);
+
+    // eyes
+    var eye = new THREE.Mesh(
+      new THREE.SphereGeometry(0.3, 5, 5),
+      new THREE.MeshLambertMaterial({ color: 0x000000 })
+    );
+    eye.position.set(0.4,0.6,0.6);
+    var eye2 = new THREE.Mesh(
+      new THREE.SphereGeometry(0.3, 5, 5),
+      new THREE.MeshLambertMaterial({ color: 0x000000 })
+    );
+    eye2.position.set(-0.4,0.6,0.6);
+
+    mesh.add(eye);
+    mesh.add(eye2);
+
+    // hands
+    var hand1 = new THREE.Mesh(
+      new THREE.BoxGeometry(2, 0.5, 0.5),
+      new THREE.MeshLambertMaterial({ color: 0xFF5500 })
+    );
+    hand1.position.set(-2.1,-0.7,0);
+    var hand2 = new THREE.Mesh(
+      new THREE.BoxGeometry(2, 0.5, 0.5),
+      new THREE.MeshLambertMaterial({ color: 0xFF5500 })
+    );
+    hand2.position.set(2.1,-0.7,0);
+
+    mesh.add(hand1);
+    mesh.add(hand2);
+
+    // body
+    var bodyy = new THREE.Mesh(
+      new THREE.BoxGeometry(1.5, 2, 1),
+      new THREE.MeshLambertMaterial({ color: 0xCCDD88 })
+    );
+    bodyy.position.set(0,-1.8,0);
+    mesh.add(bodyy);
+
+    // foots
+    var footSize = new THREE.BoxGeometry(0.5, 3, 0.6);
+    var footMaterial = new THREE.MeshLambertMaterial({ color: 0xFF5500 });
+    var foot1 = new THREE.Mesh(
+      footSize,
+      footMaterial
+    );
+    foot1.position.set(-0.7,-4.5,0);
+    var foot2 = new THREE.Mesh(
+      footSize,
+      footMaterial
+    );
+    foot2.position.set(0.7,-4.5,0);
+
+    mesh.add(foot1);
+    mesh.add(foot2);
+
+    scene.add(mesh);
+
+    var light = new THREE.PointLight(0xFFFFFF, 1, 100);
+    light.position.set(10, 0, 25);
+    scene.add( light );
+
+    var starSphere = createStarfield();
+    scene.add(starSphere);
+
+    var earthMesh = createEarth(7);
+    earthMesh.position.set(0, 0, 2);
+    scene.add(earthMesh);
+
+    var rotateMesh = function () {
+      mesh.rotation.y += 0.1;
+    }
+
+    var t = 0;
+    var hy = 0;
+    var moveMesh = function () {
+      t += 0.01;
+      mesh.position.x = 10 * Math.cos(t) + 0;
+      mesh.position.z = 10 * Math.sin(t) + 0;
+      if (mesh.position.y > 10) {
+        hy = 0;
+      }
+      if (mesh.position.y < -10) {
+        hy = 1;
+      }
+      if (hy) {
+        mesh.position.y += 0.1;
+      } else {
+        mesh.position.y -= 0.1;
+      }
+    }
+
+    var render = function () {
+      requestAnimationFrame(render);
+      rotateMesh();
+      moveMesh();
+      rotateEarth(earthMesh);
+      renderer.render(scene, camera);
+    }
+    render();
+  </script>
+</body>
+</html>
