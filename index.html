@@ -38,31 +38,32 @@
     var stars = createStarfield(2);
     scene.add(stars);
 
-    var human = createHuman();
+    var human = createHuman(0.5);
     // human.position.set(0, 0, 10);
     scene.add(human);
 
     var t = 0;
     var hy = 0;
-    var moveMesh = function () {
+    var moveHuman = function (theHuman) {
       t += 0.005;
-      human.position.x = 10 * Math.cos(t) + 0;
-      human.position.z = 10 * Math.sin(t) + 0;
-      if (human.position.y > 5) {
+      theHuman.position.x = 10 * Math.cos(t) + 0;
+      theHuman.position.z = 10 * Math.sin(t) + 0;
+      if (theHuman.position.y > 5) {
         hy = 0;
       }
-      if (human.position.y < -5) {
+      if (theHuman.position.y < -5) {
         hy = 1;
       }
       if (hy) {
-        human.position.y += 0.01;
+        theHuman.position.y += 0.01;
       } else {
-        human.position.y -= 0.01;
+        theHuman.position.y -= 0.01;
       }
     }
     var render = function () {
       rotateEarth(theEarth);
-      moveMesh();
+      rotateHuman(human);
+      moveHuman(human);
       requestAnimationFrame(render);
       renderer.render(scene, camera);
     }
