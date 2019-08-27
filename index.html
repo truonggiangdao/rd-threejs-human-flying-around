@@ -45,19 +45,19 @@
     var t = 0;
     var hy = 0;
     var moveMesh = function () {
-      t += 0.01;
+      t += 0.005;
       human.position.x = 10 * Math.cos(t) + 0;
       human.position.z = 10 * Math.sin(t) + 0;
-      if (human.position.y > 10) {
+      if (human.position.y > 5) {
         hy = 0;
       }
-      if (human.position.y < -10) {
+      if (human.position.y < -5) {
         hy = 1;
       }
       if (hy) {
-        human.position.y += 0.1;
+        human.position.y += 0.01;
       } else {
-        human.position.y -= 0.1;
+        human.position.y -= 0.01;
       }
     }
     var render = function () {

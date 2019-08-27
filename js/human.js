@@ -120,11 +120,11 @@ function createHuman(scale) {
 
   // head
   var head = new THREE.Mesh(
-    new THREE.BoxGeometry(1, 1.5, 1),
-    new THREE.MeshLambertMaterial({ color: 0xFFCC00 })
-    // new THREE.MeshPhongMaterial({
-    //   map: new THREE.TextureLoader().load('img/face.jpeg'),
-    // })
+    new THREE.BoxGeometry(1, 1.2, 1),
+    // new THREE.MeshLambertMaterial({ color: 0xFFCC00 })
+    new THREE.MeshPhongMaterial({
+      map: new THREE.TextureLoader().load('img/face.jpeg'),
+    })
   );
 
   mesh.add(head);
