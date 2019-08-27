@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>RD ThreeJS - Flying around Earth</title>
+  <link rel="stylesheet" href="css/main.css">
+</head>
+<body>
+  <script src="lib/three.min.js"></script>
+  <script src="js/earth.common.js"></script>
+  <script src="js/human.js"></script>
+  <script>
+    var scene = new THREE.Scene();
+    var camera = new THREE.PerspectiveCamera( 40, window.innerWidth / window.innerHeight, 0.01, 100 );
+    camera.position.z = 30;
+
+    var renderer = new THREE.WebGLRenderer({ antialias: true});
+    renderer.setClearColor('black');
+    renderer.setSize( window.innerWidth, window.innerHeight );
+    document.body.appendChild( renderer.domElement );
+
+    window.addEventListener('resize', () => {
+      renderer.setSize( window.innerWidth, window.innerHeight );
+      camera.aspect = window.innerWidth / window.innerHeight;
+      camera.updateProjectionMatrix();
+    });
+
+    var theEarth = createEarth(5);
+
+    scene.add(theEarth);
+
+    var sun = new THREE.PointLight(0xFFFFFF, 1, 100);
+    sun.position.set(10, 0, 25);
+    scene.add(sun);
+
+    var stars = createStarfield(2);
+    scene.add(stars);
+
+    var human = createHuman();
+    // human.position.set(0, 0, 10);
+    scene.add(human);
+
+    var t = 0;
+    var hy = 0;
+    var moveMesh = function () {
+      t += 0.01;
+      human.position.x = 10 * Math.cos(t) + 0;
+      human.position.z = 10 * Math.sin(t) + 0;
+      if (human.position.y > 10) {
+        hy = 0;
+      }
+      if (human.position.y < -10) {
+        hy = 1;
+      }
+      if (hy) {
+        human.position.y += 0.1;
+      } else {
+        human.position.y -= 0.1;
+      }
+    }
+    var render = function () {
+      rotateEarth(theEarth);
+      moveMesh();
+      requestAnimationFrame(render);
+      renderer.render(scene, camera);
+    }
+    render();
+  </script>
+</body>
+</html>

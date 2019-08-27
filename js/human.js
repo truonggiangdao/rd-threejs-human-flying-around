@@ -114,3 +114,74 @@ Character.prototype.collide = function () {
   // INSERT SOME MAGIC HERE
   return false;
 };
+
+function createHuman(scale) {
+  var mesh = new THREE.Object3D();
+
+  // head
+  var head = new THREE.Mesh(
+    new THREE.BoxGeometry(1, 1.5, 1),
+    new THREE.MeshLambertMaterial({ color: 0xFFCC00 })
+    // new THREE.MeshPhongMaterial({
+    //   map: new THREE.TextureLoader().load('img/face.jpeg'),
+    // })
+  );
+
+  mesh.add(head);
+
+  // eyes
+  var eye = new THREE.Mesh(
+    new THREE.SphereGeometry(0.3, 5, 5),
+    new THREE.MeshLambertMaterial({ color: 0x000000 })
+  );
+  eye.position.set(0.4,0.6,0.6);
+  var eye2 = new THREE.Mesh(
+    new THREE.SphereGeometry(0.3, 5, 5),
+    new THREE.MeshLambertMaterial({ color: 0x000000 })
+  );
+  eye2.position.set(-0.4,0.6,0.6);
+
+  mesh.add(eye);
+  mesh.add(eye2);
+
+  // hands
+  var hand1 = new THREE.Mesh(
+    new THREE.BoxGeometry(2, 0.5, 0.5),
+    new THREE.MeshLambertMaterial({ color: 0xFF5500 })
+  );
+  hand1.position.set(-2.1,-0.7,0);
+  var hand2 = new THREE.Mesh(
+    new THREE.BoxGeometry(2, 0.5, 0.5),
+    new THREE.MeshLambertMaterial({ color: 0xFF5500 })
+  );
+  hand2.position.set(2.1,-0.7,0);
+
+  mesh.add(hand1);
+  mesh.add(hand2);
+
+  // body
+  var bodyy = new THREE.Mesh(
+    new THREE.BoxGeometry(1.5, 2, 1),
+    new THREE.MeshLambertMaterial({ color: 0xCCDD88 })
+  );
+  bodyy.position.set(0,-1.8,0);
+  mesh.add(bodyy);
+
+  // foots
+  var footSize = new THREE.BoxGeometry(0.5, 3, 0.6);
+  var footMaterial = new THREE.MeshLambertMaterial({ color: 0xFF5500 });
+  var foot1 = new THREE.Mesh(
+    footSize,
+    footMaterial
+  );
+  foot1.position.set(-0.7,-4.5,0);
+  var foot2 = new THREE.Mesh(
+    footSize,
+    footMaterial
+  );
+  foot2.position.set(0.7,-4.5,0);
+
+  mesh.add(foot1);
+  mesh.add(foot2);
+  return mesh;
+};
