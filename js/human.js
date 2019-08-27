@@ -122,10 +122,10 @@ function createHuman(size) {
   // head
   var head = new THREE.Mesh(
     new THREE.BoxGeometry(scale * 1, scale * 1.2, scale * 1),
-    new THREE.MeshLambertMaterial({ color: 0xFFCC00 })
-    // new THREE.MeshPhongMaterial({
-    //   map: new THREE.TextureLoader().load('img/face.jpeg'),
-    // })
+    // new THREE.MeshLambertMaterial({ color: 0xFFCC00 })
+    new THREE.MeshPhongMaterial({
+      map: new THREE.TextureLoader().load('img/face.jpeg'),
+    })
   );
 
   mesh.add(head);
@@ -180,5 +180,5 @@ function createHuman(size) {
 };
 
 function rotateHuman(human) {
-  human.rotation.y += 0.05;
+  human.rotation.y += 0.02;
 };
